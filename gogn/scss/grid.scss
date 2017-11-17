@@ -51,7 +51,7 @@
   }
 
   &-sm {
-    @media (max-width: 1199px) {
+    @media (max-width: 1000px) {
       &-12 {
         @include columns(12);
       }
@@ -71,7 +71,7 @@
   }
 
   &-sm-sm {
-    @media (max-width: 599px) {
+    @media (max-width: 499px) {
       &-12 {
         @include columns(12);
       }
@@ -147,7 +147,7 @@
 
   &-sm {
 
-    @media (max-width: 1199px) {
+    @media (max-width: 1000px) {
       &-10 {
         @include offsetColumns(10);
       }
@@ -176,7 +176,7 @@
 
   &-sm-sm {
 
-    @media (max-width: 599px) {
+    @media (max-width: 499px) {
       &-8 {
         @include offsetColumns(8);
       }
