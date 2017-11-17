@@ -49,14 +49,18 @@ class Countdown {
     const tutoringVideos = document.querySelector('#tutoring-videos');
     const entertainmentVideos = document.querySelector('#entertainment-videos');
 
+    const cNewVideosId = this.json.categories[0].videos;
+    const cTutoringVideosId = this.json.categories[1].videos;
+    const cEntertainmentVideosId = this.json.categories[2].videos;
+
     for (var i = 0; i < this.json.categories[0].videos.length; i++) {
-      newVideos.appendChild(this.createVideoElement(this.json.videos[this.json.categories[0].videos[i] - 1].poster));
+      newVideos.appendChild(this.createVideoElement(this.json.videos[cNewVideosId[i] - 1].poster));
     }
     for (var i = 0; i < this.json.categories[1].videos.length; i++) {
-      tutoringVideos.appendChild(this.createVideoElement(this.json.videos[this.json.categories[1].videos[i] - 1].poster));
+      tutoringVideos.appendChild(this.createVideoElement(this.json.videos[cTutoringVideosId[i] - 1].poster));
     }
     for (var i = 0; i < this.json.categories[2].videos.length; i++) {
-      entertainmentVideos.appendChild(this.createVideoElement(this.json.videos[this.json.categories[2].videos[i] - 1].poster));
+      entertainmentVideos.appendChild(this.createVideoElement(this.json.videos[cEntertainmentVideosId[i] - 1].poster));
     }
   }
 
