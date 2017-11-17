@@ -68,6 +68,8 @@ class Countdown {
     const container = document.createElement('figure');
     container.setAttribute('class', 'col');
     container.classList.add('col-4');
+    container.classList.add('col-sm-6');
+    container.classList.add('col-sm-sm-12');
 
     const img = document.createElement('img');
     img.src = video.poster;
