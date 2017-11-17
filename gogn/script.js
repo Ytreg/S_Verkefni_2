@@ -54,25 +54,51 @@ class Countdown {
     const cEntertainmentVideosId = this.json.categories[2].videos;
 
     for (var i = 0; i < this.json.categories[0].videos.length; i++) {
-      newVideos.appendChild(this.createVideoElement(this.json.videos[cNewVideosId[i] - 1].poster));
+      newVideos.appendChild(this.createVideoElement(this.json.videos[cNewVideosId[i] - 1]));
     }
     for (var i = 0; i < this.json.categories[1].videos.length; i++) {
-      tutoringVideos.appendChild(this.createVideoElement(this.json.videos[cTutoringVideosId[i] - 1].poster));
+      tutoringVideos.appendChild(this.createVideoElement(this.json.videos[cTutoringVideosId[i] - 1]));
     }
     for (var i = 0; i < this.json.categories[2].videos.length; i++) {
-      entertainmentVideos.appendChild(this.createVideoElement(this.json.videos[cEntertainmentVideosId[i] - 1].poster));
+      entertainmentVideos.appendChild(this.createVideoElement(this.json.videos[cEntertainmentVideosId[i] - 1]));
     }
   }
 
   createVideoElement(video) {
-    const container = document.createElement('div');
+    const container = document.createElement('figure');
     container.setAttribute('class', 'col');
     container.classList.add('col-4');
 
-    const element = document.createElement('img');
-    element.src = video;
+    const img = document.createElement('img');
+    img.src = video.poster;
 
-    container.appendChild(element);
+    const caption = document.createElement('figcaption');
+    caption.appendChild(document.createTextNode(video.title));
+
+    const p = document.createElement('p');
+    const now = new Date();
+    let time = new Date(new Date(video.created) - now);
+    let time1 = now - new Date(video.created);
+    console.log(now, new Date(video.created));
+    console.log(time1);
+    if (time.getFullYear() > 0) time = `Fyrir ${time.getFullYear()} árum síðan`;
+    else if (time.getMonth() > 0) time = `Fyrir ${time.getMonth()} mánuðum síðan`;
+    else if (time.get() > 0) time = `Fyrir ${time.getMonth()} mánuðum síðan`;
+
+    else if (time.getDay() > 0) {
+      if (time.getDay() >= 7) {
+        time = `Fyrir ${Math.floor(time.getDay() / 7)} vikum síðan`;
+      } else {
+        time = `Fyrir ${time.getDay()} dögum síðan`;
+      }
+    }
+    else if (time.getHours() > 0) time = `Fyrir ${time.getHours()} klukkutímum síðan`;
+    else time = `Fyrir ${time.getMinutes()} mínútum síðan`;
+    p.appendChild(document.createTextNode(time));
+
+    container.appendChild(img);
+    container.appendChild(caption);
+    container.appendChild(p);
 
     return container;
   }

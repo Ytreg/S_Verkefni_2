@@ -19,7 +19,7 @@ html {
   line-height: 1.5;
   background-color: #202020;
   color: white; }
-  @media (min-width: 1200px) {
+  @media (min-width: 1500px) {
     html {
       margin: 0; } }
 
@@ -29,10 +29,10 @@ img {
 
 main {
   /* stylelint-disable-line */
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0 auto;
   overflow-x: hidden; }
-  @media (min-width: 1200px) {
+  @media (min-width: 1500px) {
     main {
       margin: 0 auto; } }
 
@@ -429,7 +429,7 @@ footer {
       width: 30%; }
 
 .footer {
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0;
   margin-right: 20px;
   margin-left: 20px;

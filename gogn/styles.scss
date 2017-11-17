@@ -1,5 +1,5 @@
 // breytur fyrir mikið notaðar stærðir
-$max-width: 1200px;
+$max-width: 1500px;
 $gutter: 20px;
 
 /* setjum box-sizing: border-box; á allt */
@@ -27,7 +27,7 @@ html { /* stylelint-disable-line */
   background-color: #202020;
   color: white;
 
-  @media(min-width: 1200px) {
+  @media(min-width: 1500px) {
     margin: 0;
   }
 
