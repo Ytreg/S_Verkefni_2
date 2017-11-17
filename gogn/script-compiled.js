@@ -92,17 +92,24 @@ var Countdown = function () {
 
       var p = document.createElement('p');
       var now = new Date();
-      var time = new Date(new Date(video.created) - now);
-      var time1 = now - new Date(video.created);
-      console.log(now, new Date(video.created));
-      console.log(time1);
-      if (time.getFullYear() > 0) time = 'Fyrir ' + time.getFullYear() + ' \xE1rum s\xED\xF0an';else if (time.getMonth() > 0) time = 'Fyrir ' + time.getMonth() + ' m\xE1nu\xF0um s\xED\xF0an';else if (time.get() > 0) time = 'Fyrir ' + time.getMonth() + ' m\xE1nu\xF0um s\xED\xF0an';else if (time.getDay() > 0) {
-        if (time.getDay() >= 7) {
-          time = 'Fyrir ' + Math.floor(time.getDay() / 7) + ' vikum s\xED\xF0an';
+      var time = new Date(video.created);
+      time = now.getTime() - time.getTime();
+
+      var totalSecs = Math.ceil(time / 1000);
+
+      var totalMin = Math.floor(totalSecs / 60);
+
+      var totalHrs = Math.floor(totalSecs / (60 * 60));
+
+      var days = Math.floor(totalSecs / (60 * 60 * 24));
+
+      if (days >= 365) time = 'Fyrir ' + Math.floor(days / 365) + ' \xE1rum s\xED\xF0an';else if (days >= 31) time = 'Fyrir ' + Math.floor(days / 31) + ' m\xE1nu\xF0um s\xED\xF0an';else if (days > 0) {
+        if (days >= 7) {
+          time = 'Fyrir ' + Math.floor(days / 7) + ' vikum s\xED\xF0an';
         } else {
-          time = 'Fyrir ' + time.getDay() + ' d\xF6gum s\xED\xF0an';
+          time = 'Fyrir ' + days + ' d\xF6gum s\xED\xF0an';
         }
-      } else if (time.getHours() > 0) time = 'Fyrir ' + time.getHours() + ' klukkut\xEDmum s\xED\xF0an';else time = 'Fyrir ' + time.getMinutes() + ' m\xEDn\xFAtum s\xED\xF0an';
+      } else if (totalHrs > 0) time = 'Fyrir ' + time.getHours() + ' klukkut\xEDmum s\xED\xF0an';else time = 'Fyrir ' + totalMin + ' m\xEDn\xFAtum s\xED\xF0an';
       p.appendChild(document.createTextNode(time));
 
       container.appendChild(img);
