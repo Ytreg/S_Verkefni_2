@@ -19,7 +19,7 @@ var Countdown = function () {
   this.keyName = 'countdown';
   this.container = document.querySelector('.countdown');
   this.form = document.querySelector('form');
-   // til þess að submit hafi þennan klasa sem "this" verðum við
+    // til þess að submit hafi þennan klasa sem "this" verðum við
   // að nota bind hér (og í öðrum föllum sem við bindum!)
   this.form.addEventListener('submit', this.submit.bind(this));
   */
@@ -38,7 +38,7 @@ var Countdown = function () {
 
       /*
       const saved = window.localStorage.getItem(this.keyName);
-       if (saved) {
+        if (saved) {
         const parsed = JSON.parse(saved);
         this.create(parsed.title, new Date(parsed.date));
       }
