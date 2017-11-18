@@ -7,13 +7,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * Niðurteljari!
  */
-var Countdown = function () {
+var Video = function () {
   /**
    * Finnur container fyrir niðurteljara og form.
    * Bindur submit eventhandler við form.
    */
-  function Countdown() {
-    _classCallCheck(this, Countdown);
+  function Video() {
+    _classCallCheck(this, Video);
   }
   /*
   this.keyName = 'countdown';
@@ -31,7 +31,7 @@ var Countdown = function () {
    */
 
 
-  _createClass(Countdown, [{
+  _createClass(Video, [{
     key: 'load',
     value: function load() {
       var _this = this;
@@ -43,7 +43,6 @@ var Countdown = function () {
         this.create(parsed.title, new Date(parsed.date));
       }
       */
-      this.headings = document.querySelectorAll('.heading--category');
 
       $.getJSON("videos.json", function (json) {
         _this.json = json;
@@ -52,64 +51,126 @@ var Countdown = function () {
       });
     }
   }, {
-    key: 'done',
-    value: function done() {
-      for (var i = 0; i < this.headings.length; i++) {
-        this.headings[i].innerText = this.json.categories[i].title;
-      }
-      var newVideos = document.querySelector('#new-videos');
-      var tutoringVideos = document.querySelector('#tutoring-videos');
-      var entertainmentVideos = document.querySelector('#entertainment-videos');
-
-      var cNewVideosId = this.json.categories[0].videos;
-      var cTutoringVideosId = this.json.categories[1].videos;
-      var cEntertainmentVideosId = this.json.categories[2].videos;
-
-      for (var i = 0; i < this.json.categories[0].videos.length; i++) {
-        newVideos.appendChild(this.createVideoElement(this.json.videos[cNewVideosId[i] - 1]));
-      }
-      for (var i = 0; i < this.json.categories[1].videos.length; i++) {
-        tutoringVideos.appendChild(this.createVideoElement(this.json.videos[cTutoringVideosId[i] - 1]));
-      }
-      for (var i = 0; i < this.json.categories[2].videos.length; i++) {
-        entertainmentVideos.appendChild(this.createVideoElement(this.json.videos[cEntertainmentVideosId[i] - 1]));
+    key: 'createCategoryElements',
+    value: function createCategoryElements() {
+      for (var i = 0; i < this.json.categories.length; i++) {
+        $('main').append($('<section id="' + this.json.categories[i].id + '">').append($('<div class="row">').append($('<div class="col col-12">').append($('<h1 class="heading heading--category">').text(this.json.categories[i].title)))).append(this.createPosterElements(i))).append('<hr>');
       }
     }
   }, {
-    key: 'createVideoElement',
-    value: function createVideoElement(video) {
+    key: 'done',
+    value: function done() {
+      this.createCategoryElements();
+    }
+  }, {
+    key: 'createPosterElements',
+    value: function createPosterElements(id) {
+      var container = $('<div class="row">');
+      var c = this.json.categories[id].videos;
+
+      for (var i = 0; i < this.json.categories[id].videos.length; i++) {
+        container.append(this.createPosterElement(this.json.videos[c[i] - 1]));
+      }
+      return container;
+    }
+  }, {
+    key: 'createPosterElement',
+    value: function createPosterElement(video) {
       var container = document.createElement('figure');
       container.setAttribute('class', 'col');
       container.classList.add('col-4');
       container.classList.add('col-sm-6');
       container.classList.add('col-sm-sm-12');
 
+      var thumbnail = document.createElement('a');
+      thumbnail.setAttribute('href', '/video.html?id=' + video.id);
+
       var img = document.createElement('img');
       img.src = video.poster;
+
+      var duration = document.createElement('span');
+
+      // Sýna lengdina á myndbandi
+      var d = video.duration;
+      d = Math.floor(d / 60) + ':' + (d % 60 < 10 ? "0" + d % 60 : d % 60);
+
+      duration.appendChild(document.createTextNode(d));
+      thumbnail.appendChild(img);
+      thumbnail.appendChild(duration);
 
       var caption = document.createElement('figcaption');
       caption.appendChild(document.createTextNode(video.title));
 
       var p = document.createElement('p');
       var now = new Date();
-      var time = new Date(new Date(video.created) - now);
-      var time1 = now - new Date(video.created);
-      console.log(now, new Date(video.created));
-      console.log(time1);
-      if (time.getFullYear() > 0) time = 'Fyrir ' + time.getFullYear() + ' \xE1rum s\xED\xF0an';else if (time.getMonth() > 0) time = 'Fyrir ' + time.getMonth() + ' m\xE1nu\xF0um s\xED\xF0an';else if (time.get() > 0) time = 'Fyrir ' + time.getMonth() + ' m\xE1nu\xF0um s\xED\xF0an';else if (time.getDay() > 0) {
-        if (time.getDay() >= 7) {
-          time = 'Fyrir ' + Math.floor(time.getDay() / 7) + ' vikum s\xED\xF0an';
+      var time = new Date(video.created);
+      time = now.getTime() - time.getTime();
+      var time1 = new Date(video.created);
+
+      var totalSecs = Math.ceil(time / 1000);
+
+      var totalMin = Math.floor(totalSecs / 60);
+
+      var totalHrs = Math.floor(totalSecs / (60 * 60));
+
+      // Fá fylki sem inniheldur árs-, mánaðar- og dagsmun
+      var dmy = this.diffDate(now, time1);
+
+      if (dmy.years > 0) time = 'Fyrir ' + dmy.years + ' \xE1rum s\xED\xF0an';else if (dmy.months > 0) time = 'Fyrir ' + dmy.months + ' m\xE1nu\xF0um s\xED\xF0an';else if (dmy.days > 0) {
+        if (dmy.days >= 7) {
+          time = 'Fyrir ' + Math.floor(dmy.days / 7) + ' vikum s\xED\xF0an';
         } else {
-          time = 'Fyrir ' + time.getDay() + ' d\xF6gum s\xED\xF0an';
+          time = 'Fyrir ' + dmy.days + ' d\xF6gum s\xED\xF0an';
         }
-      } else if (time.getHours() > 0) time = 'Fyrir ' + time.getHours() + ' klukkut\xEDmum s\xED\xF0an';else time = 'Fyrir ' + time.getMinutes() + ' m\xEDn\xFAtum s\xED\xF0an';
+      } else if (totalHrs > 0) time = 'Fyrir ' + totalHrs + ' klukkut\xEDmum s\xED\xF0an';else if (totalMin > 0) time = 'Fyrir ' + totalMin + ' m\xEDn\xFAtum s\xED\xF0an';else time = 'Fyrir ' + totalSecs + ' sek\xFAndum s\xED\xF0an';
+
       p.appendChild(document.createTextNode(time));
 
-      container.appendChild(img);
+      container.appendChild(thumbnail);
       container.appendChild(caption);
       container.appendChild(p);
 
       return container;
+    }
+  }, {
+    key: 'diffDate',
+    value: function diffDate(date1, date2) {
+      var arr = { years: 0, months: 0, days: 0 };
+
+      if (date1 > date2) {
+        var tmp = date1;
+        date1 = date2;
+        date2 = tmp;
+      }
+
+      var years1 = date1.getFullYear();
+      var years2 = date2.getFullYear();
+
+      var months1 = date1.getMonth();
+      var months2 = date2.getMonth();
+
+      var days1 = date1.getDate();
+      var days2 = date2.getDate();
+
+      arr.years = years2 - years1;
+      arr.months = months2 - months1;
+      arr.days = days2 - days1;
+
+      if (arr.days < 0) {
+        var tmpDate = new Date(date1.getFullYear(), date1.getMonth() + 1, 1, 0, 0, -1);
+
+        var numDays = tmpDate.getDate();
+
+        arr.months--;
+        arr.days += numDays;
+      }
+
+      if (arr.months < 0) {
+        arr.months += 12;
+        arr.years--;
+      }
+
+      return arr;
     }
     /**
      * Tekur við title sem streng og date sem Date hlut
@@ -137,12 +198,12 @@ var Countdown = function () {
 
   }]);
 
-  return Countdown;
+  return Video;
 }();
 
 document.addEventListener('DOMContentLoaded', function () {
-  var countdown = new Countdown();
-  countdown.load();
+  var video = new Video();
+  video.load();
 });
 
 //# sourceMappingURL=script-compiled.js.map
