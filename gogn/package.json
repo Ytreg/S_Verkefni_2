@@ -4,11 +4,11 @@
   "description": "",
   "main": "scripts.js",
   "scripts": {
-    "eslint": "eslint script.js",
+    "eslint": "eslint script1.js",
     "stylelint": "stylelint *.scss scss/*.scss --syntax scss",
     "lint": "npm-run-all --parallel eslint stylelint",
-    "babel": "babel script.js --watch --out-file script-compiled.js --source-maps",
-    "browser-sync": "browser-sync start --server --files index.html styles.css script-compiled.js",
+    "babel": "babel script1.js --watch --out-file script1-compiled.js --source-maps",
+    "browser-sync": "browser-sync start --server --files *.html styles.css *compiled.js",
     "sass": "node-sass --source-map-embed --watch styles.scss styles.css",
     "dev": "npm-run-all --parallel sass babel browser-sync"
   },

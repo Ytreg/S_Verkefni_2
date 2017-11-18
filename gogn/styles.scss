@@ -52,6 +52,10 @@ main { /* stylelint-disable-line */
   }
 }
 
+video { /* stylelint-disable-line */
+  width: 100%;
+}
+
 a { /* stylelint-disable-line */
   position: relative;
 }
@@ -81,11 +85,13 @@ footer { /* stylelint-disable-line */
 @import "scss/header";
 @import "scss/heading";
 @import "scss/text";
-@import "scss/button";
+@import "scss/buttons";
 @import "scss/card";
 @import "scss/cardlist";
 @import "scss/nav";
 @import "scss/menu";
 @import "scss/profile";
 @import "scss/buy";
-@import "scss/footer"
+@import "scss/footer";
+@import "scss/error";
+@import "scss/video";

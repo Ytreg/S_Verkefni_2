@@ -1,11 +1,5 @@
-/**
- * Niðurteljari!
- */
-class Video {
-  /**
-   * Finnur container fyrir niðurteljara og form.
-   * Bindur submit eventhandler við form.
-   */
+class Videos {
+
   constructor() {
     /*
     this.keyName = 'countdown';
@@ -18,20 +12,7 @@ class Video {
     */
   }
 
-  /**
-   * Sækir gögn úr localStorage eftir this.keyName
-   * Ef gögn eru til, hleður þeim inn með því að kalla í this.create()
-   */
   load() {
-    /*
-    const saved = window.localStorage.getItem(this.keyName);
-
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      this.create(parsed.title, new Date(parsed.date));
-    }
-    */
-
     $.getJSON("videos.json", json => {
       this.json = json;
       console.log(this.json);
@@ -67,32 +48,46 @@ class Video {
   }
 
   createPosterElement(video) {
+    const container1 = $('<figure class="col col-4 col-sm-6 col-sm-sm-12">');
+    console.log(container1);
     const container = document.createElement('figure');
     container.setAttribute('class', 'col');
     container.classList.add('col-4');
     container.classList.add('col-sm-6');
     container.classList.add('col-sm-sm-12');
+    if (container === container1) console.log('true');
 
+    const thumbnail1 = $(`<a href="/video.html?id=${video.id}">`);
     const thumbnail = document.createElement('a');
     thumbnail.setAttribute('href', `/video.html?id=${video.id}`);
+    if (thumbnail === thumbnail1) console.log('true');
 
+    const img1 = $(`<img src="${video.poster}">`);
     const img = document.createElement('img');
     img.src = video.poster;
+    if (img === img1) console.log('true');
 
+    const duration1 = $('<span>');
     const duration = document.createElement('span');
 
     // Sýna lengdina á myndbandi
     let d = video.duration;
     d = `${Math.floor(d/60)}:${d%60 < 10 ? "0"+d%60 : d%60}`;
 
+    duration1.text(d);
     duration.appendChild(document.createTextNode(d));
+    console.log(duration1);
     thumbnail.appendChild(img);
     thumbnail.appendChild(duration);
 
+    const caption1 = $('<figcaption>').text(video.title);
     const caption = document.createElement('figcaption');
     caption.appendChild(document.createTextNode(video.title));
+    console.log(caption1);
 
+    const p1 = $('<p>');
     const p = document.createElement('p');
+
     const now = new Date();
     let time = new Date(video.created);
     time = now.getTime() - time.getTime();
@@ -120,8 +115,13 @@ class Video {
     else if (totalMin > 0) time = `Fyrir ${totalMin} mínútum síðan`;
     else time = `Fyrir ${totalSecs} sekúndum síðan`;
 
+    p1.text(time);
+    console.log(p1);
     p.appendChild(document.createTextNode(time));
 
+    container1.append(thumbnail1);
+    container1.append(caption1);
+    container1.append(p1);
     container.appendChild(thumbnail);
     container.appendChild(caption);
     container.appendChild(p);
@@ -169,34 +169,10 @@ class Video {
 
     return arr;
   }
-  /**
-   * Tekur við title sem streng og date sem Date hlut
-   * Vistar sem json gögn í localStorage undir this.keyName
-   */
-   /*
-  save(title, date) {
-    const data = { title, date };
-    const json = JSON.stringify(data);
-    window.localStorage.setItem(this.keyName, json);
-  }
-*/
-
-  /**
-   * Tekur við:
-   *  - date sem streng á forminu "yyyy-mm-dd", t.d. "2017-11-06"
-   *  - time sem streng á forminu "hh:mm", t.d. "09:00"
-   * Skilar date hlut með gögnum úr date og time
-   */
-   /*
-  parseDate(date, time) {
-    return new Date(`${date} ${time}`);
-  }
-  */
-
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const video = new Video();
-  video.load();
+  const videos = new Videos();
+  videos.load();
 
 });

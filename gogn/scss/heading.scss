@@ -4,6 +4,10 @@
   font-size: 1.3125em;
   border-bottom: 0;
 
+  &--video {
+    margin: auto;
+  }
+
   &--category {
 
     .button { /* stylelint-disable-line */
