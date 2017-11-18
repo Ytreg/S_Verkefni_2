@@ -52,12 +52,19 @@ main { /* stylelint-disable-line */
   }
 }
 
-section { /* stylelint-disable-line */
-  margin-bottom: $gutter*12.5;
+a { /* stylelint-disable-line */
+  position: relative;
+}
 
-  @media (max-width: 1199px) {
-    margin-bottom: $gutter*3;
-  }
+span {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 16px 14px;
+  background-color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  padding: 5px;
+  color: white;
 }
 
 nav { /* stylelint-disable-line */

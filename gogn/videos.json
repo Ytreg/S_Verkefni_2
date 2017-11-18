@@ -36,15 +36,18 @@
   "categories": [
     {
       "title": "Nýleg myndbönd",
-      "videos": [1, 2]
+      "videos": [1, 2],
+	  "id": "new"
     },
     {
       "title": "Kennslumyndbönd",
-      "videos": [1, 3, 4]
+      "videos": [1, 3, 4],
+	  "id": "education"
     },
     {
       "title": "Skemmtimyndbönd",
-      "videos": [2, 3, 4]
+      "videos": [2, 3, 4],
+	  "id": "entertainment"
     }
   ]
 }
