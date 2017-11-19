@@ -24,7 +24,7 @@ html { /* stylelint-disable-line */
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
   line-height: 1.5;
-  background-color: #202020;
+  background-color: #303030;
   color: white;
 
   @media(min-width: 1500px) {
@@ -83,7 +83,6 @@ footer { /* stylelint-disable-line */
 
 @import "scss/grid";
 @import "scss/heading";
-@import "scss/text";
 @import "scss/buttons";
 @import "scss/error";
 @import "scss/video";

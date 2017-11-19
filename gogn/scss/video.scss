@@ -2,7 +2,11 @@
   &--wrapper {
     position: relative;
   }
-  &--figcaption {
-    text-decoration-style: solid;
-  }
+}
+figcaption {
+  font-size: 1.2em;
+  font-weight: bold;
+  white-space: nowrap;
+  text-overflow: clip;
+  overflow: hidden;
 }
