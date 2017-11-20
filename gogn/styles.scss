@@ -24,8 +24,8 @@ html { /* stylelint-disable-line */
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
   line-height: 1.5;
-  color: #999;
-  background-color: #202020;
+  color: #fff;
+  background-color: #303030;
 
   @media (min-width: 1500px) {
     margin: 0;
@@ -53,7 +53,7 @@ main { /* stylelint-disable-line */
 }
 
 video { /* stylelint-disable-line */
-  width: 100%;
+  max-width: 100%;
 }
 
 a { /* stylelint-disable-line */
@@ -82,16 +82,7 @@ footer { /* stylelint-disable-line */
 }
 
 @import "scss/grid";
-@import "scss/header";
 @import "scss/heading";
-@import "scss/text";
 @import "scss/buttons";
-@import "scss/card";
-@import "scss/cardlist";
-@import "scss/nav";
-@import "scss/menu";
-@import "scss/profile";
-@import "scss/buy";
-@import "scss/footer";
 @import "scss/error";
 @import "scss/video";
