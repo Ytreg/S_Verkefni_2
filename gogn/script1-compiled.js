@@ -7,6 +7,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Video = function () {
   function Video() {
     _classCallCheck(this, Video);
+
+    this.id = window.location.search.substring(4);
   }
 
   _createClass(Video, [{
@@ -14,12 +16,10 @@ var Video = function () {
     value: function load() {
       var _this = this;
 
-      $.getJSON("videos.json", function (json) {
+      $.getJSON('videos.json', function (json) {
         _this.json = json;
-        console.log(_this.json);
         _this.done();
       });
-      this.id = location.search.substring(4);
     }
   }, {
     key: 'done',
@@ -35,24 +35,19 @@ var Video = function () {
     key: 'success',
     value: function success() {
       $('.heading--video').text(this.video.title);
-      var video = $('<video src="' + this.video.video + '" poster="' + this.video.poster + '">');
-      $('main').append($('<div class="row">').append($('<div class="col col-10 offset-1 video--wrapper">').append(video).append('<button class="buttons--button buttons--play buttons--video">'))).append($('<div class="row">').append($('<div class="buttons">').append('<button class="buttons--button buttons--back">').append('<button class="buttons--button buttons--play">').append('<button class="buttons--button buttons--mute">').append('<button class="buttons--button buttons--fullscreen">').append('<button class="buttons--button buttons--next">'))).append($('<div class="row">').append($('<div class="col col-12 error">').append($('<a href="/" class="error--back">').text('Til baka'))));
-
-      $('video').css("opacity", "0.7");
+      var videoElement = $('<video src="' + this.video.video + '" poster="' + this.video.poster + '">');
+      $('main').append($('<div class="video--wrapper">').append(videoElement).append($('<div class="video--overlay">').append('<button class="buttons--button buttons--play buttons--video">'))).append($('<div class="row">').append($('<div class="buttons">').append('<button class="buttons--button buttons--back">').append('<button class="buttons--button buttons--play">').append('<button class="buttons--button buttons--mute">').append('<button class="buttons--button buttons--fullscreen">').append('<button class="buttons--button buttons--next">'))).append($('<div class="row">').append($('<div class="col col-12 error">').append($('<a href="/" class="error--back">').text('Til baka'))));
 
       $('.buttons--play').click(function () {
-        var video = $('video').get(0);
-
+        var video = videoElement.get(0);
         if (video.paused) {
           video.play();
           $('.buttons--play').removeClass('buttons--play').addClass('buttons--pause');
-          $('.buttons--video').css('display', 'none');
-          $('video').css('opacity', '1');
+          $('.video--overlay').css('display', 'none');
         } else {
           video.pause();
           $('.buttons--pause').removeClass('buttons--pause').addClass('buttons--play');
-          $('.buttons--video').css('display', 'inline-block');
-          $('video').css('opacity', '0.7');
+          $('.video--overlay').css('display', 'block');
         }
       });
 
@@ -62,7 +57,7 @@ var Video = function () {
       });
 
       $('.buttons--mute').click(function () {
-        var video = $('video').get(0);
+        var video = videoElement.get(0);
         if (video.muted) {
           video.muted = false;
           $('.buttons--unmute').removeClass('buttons--unmute').addClass('buttons--mute');
@@ -73,22 +68,19 @@ var Video = function () {
       });
 
       $('.buttons--back').click(function () {
-        $('video').get(0).currentTime -= 5;
+        if (!$('video').get(0).paused) {
+          $('video').get(0).currentTime -= 3;
+        }
       });
 
       $('.buttons--next').click(function () {
-        $('video').get(0).currentTime += 5;
+        if (!$('video').get(0).paused) {
+          $('video').get(0).currentTime += 3;
+        }
       });
 
       $('.buttons--fullscreen').click(function () {
-        $('video').css("opacity", "1");
-        $('video').get(0).webkitRequestFullscreen();
-      });
-
-      $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function (e) {
-        if (!document.webkitIsFullScreen && $('video').get(0).paused) {
-          $('video').css("opacity", "0.7");
-        }
+        return $('video').get(0).webkitRequestFullscreen();
       });
     }
   }, {

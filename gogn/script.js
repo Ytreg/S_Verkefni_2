@@ -1,30 +1,16 @@
 class Videos {
-
-  constructor() {
-    /*
-    this.keyName = 'countdown';
-    this.container = document.querySelector('.countdown');
-    this.form = document.querySelector('form');
-
-    // til þess að submit hafi þennan klasa sem "this" verðum við
-    // að nota bind hér (og í öðrum föllum sem við bindum!)
-    this.form.addEventListener('submit', this.submit.bind(this));
-    */
-  }
-
   load() {
-    $.getJSON("videos.json", json => {
+    $.getJSON('videos.json', (json) => {
       this.json = json;
-      console.log(this.json);
       this.done();
     });
   }
 
   createCategoryElements() {
-    for (var i = 0; i < this.json.categories.length; i++) {
+    for (let i = 0; i < this.json.categories.length; i += 1) {
       $('main')
         .append($(`<section id="${this.json.categories[i].id}">`)
-          .append($(`<div class="row">`)
+          .append($('<div class="row">')
             .append($('<div class="col col-12">')
               .append($('<h1 class="heading heading--category">')
                 .text(this.json.categories[i].title))))
@@ -41,130 +27,111 @@ class Videos {
     const container = $('<div class="row">');
     const c = this.json.categories[id].videos;
 
-    for (var i = 0; i < this.json.categories[id].videos.length; i++) {
+    for (let i = 0; i < this.json.categories[id].videos.length; i += 1) {
       container.append(this.createPosterElement(this.json.videos[c[i] - 1]));
     }
     return container;
   }
 
   createPosterElement(video) {
-    const container1 = $('<figure class="col col-4 col-sm-6 col-sm-sm-12">');
-    console.log(container1);
-    const container = document.createElement('figure');
-    container.setAttribute('class', 'col');
-    container.classList.add('col-4');
-    container.classList.add('col-sm-6');
-    container.classList.add('col-sm-sm-12');
-    if (container === container1) console.log('true');
+    const container = $('<figure class="col col-4 col-sm-6 col-sm-sm-12">');
 
-    const thumbnail1 = $(`<a href="/video.html?id=${video.id}">`);
-    const thumbnail = document.createElement('a');
-    thumbnail.setAttribute('href', `/video.html?id=${video.id}`);
-    if (thumbnail === thumbnail1) console.log('true');
+    const thumbnail = $(`<a href="/video.html?id=${video.id}">`);
 
-    const img1 = $(`<img src="${video.poster}">`);
-    const img = document.createElement('img');
-    img.src = video.poster;
-    if (img === img1) console.log('true');
+    const img = $(`<img src="${video.poster}">`);
 
-    const duration1 = $('<span>');
-    const duration = document.createElement('span');
+    const span = $('<span>');
 
     // Sýna lengdina á myndbandi
     let d = video.duration;
-    d = `${Math.floor(d/60)}:${d%60 < 10 ? "0"+d%60 : d%60}`;
+    const sec = d % 60 < 10 ? `0${d % 60}` : d % 60;
+    d = `${Math.floor(d / 60)}:${sec}`;
 
-    duration1.text(d);
-    duration.appendChild(document.createTextNode(d));
-    console.log(duration1);
-    thumbnail.appendChild(img);
-    thumbnail.appendChild(duration);
+    span.text(d);
+    thumbnail.append(img).append(span);
 
-    const caption1 = $('<figcaption>').text(video.title);
-    const caption = document.createElement('figcaption');
-    caption.appendChild(document.createTextNode(video.title));
-    console.log(caption1);
+    const caption = $('<figcaption>').text(video.title);
 
-    const p1 = $('<p>');
-    const p = document.createElement('p');
+    const p = $('<p>');
 
     const now = new Date();
-    let time = new Date(video.created);
-    time = now.getTime() - time.getTime();
-    let time1 = new Date(video.created);
+    const created = new Date(video.created);
+    const millisec = now.getTime() - created.getTime();
 
-    const totalSecs = Math.ceil(time / 1000);
+    const totalSecs = Math.ceil(millisec / 1000);
 
     const totalMin = Math.floor(totalSecs / 60);
 
     const totalHrs = Math.floor(totalSecs / (60 * 60));
 
-    // Fá fylki sem inniheldur árs-, mánaðar- og dagsmun
-    const dmy = this.diffDate(now, time1);
+    // Fá fylki sem inniheldur réttan árs-, mánaðar- og dagsmun
+    const dmy = this.diffDate(now, created);
+    let duration;
 
-    if (dmy.years > 0) time = `Fyrir ${dmy.years} árum síðan`;
-    else if (dmy.months > 0) time = `Fyrir ${dmy.months} mánuðum síðan`;
-    else if (dmy.days > 0) {
+    if (dmy.years > 0) {
+      duration = `Fyrir ${dmy.years} ${dmy.years === 1 ? 'ári' : 'árum'} síðan`;
+    } else if (dmy.months > 0) {
+      duration = `Fyrir ${dmy.months} ${dmy.months === 1 ? 'mánuði' : 'mánuðum'} síðan`;
+    } else if (dmy.days > 0) {
       if (dmy.days >= 7) {
-        time = `Fyrir ${Math.floor(dmy.days / 7)} vikum síðan`;
+        const weeks = Math.floor(dmy.days / 7);
+        duration = `Fyrir ${weeks} ${weeks === 1 ? 'viku' : 'vikum'} síðan`;
       } else {
-        time = `Fyrir ${dmy.days} dögum síðan`;
+        duration = `Fyrir ${dmy.days} ${dmy.days === 1 ? 'degi' : 'dögum'} síðan`;
       }
+    } else if (totalHrs > 0) {
+      duration = `Fyrir ${totalHrs} ${totalHrs === 1 ? 'klukkutíma' : 'klukkutímum'} síðan`;
+    } else if (totalMin > 0) {
+      duration = `Fyrir ${totalMin} ${totalMin === 1 ? 'mínútu' : 'mínútum'} síðan`;
+    } else {
+      duration = `Fyrir ${totalSecs} ${totalSecs === 1 ? 'sekúndu' : 'sekúndum'} síðan`;
     }
-    else if (totalHrs > 0) time = `Fyrir ${totalHrs} klukkutímum síðan`;
-    else if (totalMin > 0) time = `Fyrir ${totalMin} mínútum síðan`;
-    else time = `Fyrir ${totalSecs} sekúndum síðan`;
 
-    p1.text(time);
-    console.log(p1);
-    p.appendChild(document.createTextNode(time));
+    p.text(duration);
 
-    container1.append(thumbnail1);
-    container1.append(caption1);
-    container1.append(p1);
-    container.appendChild(thumbnail);
-    container.appendChild(caption);
-    container.appendChild(p);
+    container.append(thumbnail);
+    container.append(caption);
+    container.append(p);
 
     return container;
   }
 
-
-
   diffDate(date1, date2) {
+    let d1 = date1;
+    let d2 = date2;
     const arr = { years: 0, months: 0, days: 0 };
 
-    if (date1 > date2) {
-      const tmp = date1;
-      date1 = date2;
-      date2 = tmp;
+    if (d1 > d2) {
+      const tmp = d1;
+      d1 = d2;
+      d2 = tmp;
     }
 
-    const years1 = date1.getFullYear();
-    const years2 = date2.getFullYear();
+    const years1 = d1.getFullYear();
+    const years2 = d2.getFullYear();
 
-    const months1 = date1.getMonth();
-    const months2 = date2.getMonth();
+    const months1 = d1.getMonth();
+    const months2 = d2.getMonth();
 
-    const days1 = date1.getDate();
-    const days2 = date2.getDate();
+    const days1 = d1.getDate();
+    const days2 = d2.getDate();
 
     arr.years = years2 - years1;
     arr.months = months2 - months1;
     arr.days = days2 - days1;
 
     if (arr.days < 0) {
-      const tmpDate = new Date(date1.getFullYear(), date1.getMonth() + 1, 1, 0, 0, -1);
+      const tmpDate = new Date(d1.getFullYear(), d1.getMonth() + 1, 1, 0, 0, -1);
 
       const numDays = tmpDate.getDate();
 
-      arr.months--;
+      arr.months -= 1;
       arr.days += numDays;
     }
 
     if (arr.months < 0) {
       arr.months += 12;
-      arr.years--;
+      arr.years -= 1;
     }
 
     return arr;
@@ -174,5 +141,4 @@ class Videos {
 document.addEventListener('DOMContentLoaded', () => {
   const videos = new Videos();
   videos.load();
-
 });

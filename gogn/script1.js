@@ -1,11 +1,13 @@
 class Video {
+  constructor() {
+    this.id = window.location.search.substring(4);
+  }
+
   load() {
-    $.getJSON("videos.json", json => {
+    $.getJSON('videos.json', (json) => {
       this.json = json;
-      console.log(this.json);
       this.done();
     });
-    this.id = location.search.substring(4);
   }
 
   done() {
@@ -19,39 +21,34 @@ class Video {
 
   success() {
     $('.heading--video').text(this.video.title);
-    const video = $(`<video src="${this.video.video}" poster="${this.video.poster}">`);
+    const videoElement = $(`<video src="${this.video.video}" poster="${this.video.poster}">`);
     $('main')
-      .append($(`<div class="row">`)
-        .append($(`<div class="col col-10 offset-1 video--wrapper">`)
-          .append(video)
+      .append($('<div class="video--wrapper">')
+        .append(videoElement)
+        .append($('<div class="video--overlay">')
           .append('<button class="buttons--button buttons--play buttons--video">')))
       .append($('<div class="row">')
-        .append($(`<div class="buttons">`)
+        .append($('<div class="buttons">')
           .append('<button class="buttons--button buttons--back">')
           .append('<button class="buttons--button buttons--play">')
           .append('<button class="buttons--button buttons--mute">')
           .append('<button class="buttons--button buttons--fullscreen">')
           .append('<button class="buttons--button buttons--next">')))
-      .append($(`<div class="row">`)
-        .append($(`<div class="col col-12 error">`)
+      .append($('<div class="row">')
+        .append($('<div class="col col-12 error">')
           .append($('<a href="/" class="error--back">')
             .text('Til baka'))));
 
-    $('video').css("opacity", "0.7");
-
     $('.buttons--play').click(() => {
-      const video = $('video').get(0);
-
+      const video = videoElement.get(0);
       if (video.paused) {
         video.play();
         $('.buttons--play').removeClass('buttons--play').addClass('buttons--pause');
-        $('.buttons--video').css('display', 'none');
-        $('video').css('opacity', '1');
+        $('.video--overlay').css('display', 'none');
       } else {
         video.pause();
         $('.buttons--pause').removeClass('buttons--pause').addClass('buttons--play');
-        $('.buttons--video').css('display', 'inline-block');
-        $('video').css('opacity', '0.7');
+        $('.video--overlay').css('display', 'block');
       }
     });
 
@@ -61,7 +58,7 @@ class Video {
     });
 
     $('.buttons--mute').click(() => {
-      const video = $('video').get(0);
+      const video = videoElement.get(0);
       if (video.muted) {
         video.muted = false;
         $('.buttons--unmute').removeClass('buttons--unmute').addClass('buttons--mute');
@@ -72,32 +69,27 @@ class Video {
     });
 
     $('.buttons--back').click(() => {
-      $('video').get(0).currentTime -= 5;
+      if (!$('video').get(0).paused) {
+        $('video').get(0).currentTime -= 3;
+      }
     });
 
     $('.buttons--next').click(() => {
-      $('video').get(0).currentTime += 5;
-    });
-
-    $('.buttons--fullscreen').click(() => {
-      $('video').css("opacity", "1");
-      $('video').get(0).webkitRequestFullscreen();
-    });
-
-    $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', e => {
-      if (!document.webkitIsFullScreen && $('video').get(0).paused) {
-        $('video').css("opacity", "0.7");
+      if (!$('video').get(0).paused) {
+        $('video').get(0).currentTime += 3;
       }
-    })
+    });
+
+    $('.buttons--fullscreen').click(() => $('video').get(0).webkitRequestFullscreen());
   }
 
   failure() {
     $('main')
-      .append($(`<div class="row">`)
-        .append($(`<p class="col col-12 error">`)
+      .append($('<div class="row">')
+        .append($('<p class="col col-12 error">')
           .text('Videó er ekki til')))
-      .append($(`<div class="row">`)
-        .append($(`<div class="col col-12 error">`)
+      .append($('<div class="row">')
+        .append($('<div class="col col-12 error">')
           .append($('<a href="/" class="error--back">')
             .text('Til baka'))));
   }
@@ -106,5 +98,4 @@ class Video {
 document.addEventListener('DOMContentLoaded', () => {
   const video = new Video();
   video.load();
-
 });

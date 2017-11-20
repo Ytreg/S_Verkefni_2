@@ -4,56 +4,25 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
- * Niðurteljari!
- */
-var Video = function () {
-  /**
-   * Finnur container fyrir niðurteljara og form.
-   * Bindur submit eventhandler við form.
-   */
-  function Video() {
-    _classCallCheck(this, Video);
+var Videos = function () {
+  function Videos() {
+    _classCallCheck(this, Videos);
   }
-  /*
-  this.keyName = 'countdown';
-  this.container = document.querySelector('.countdown');
-  this.form = document.querySelector('form');
-    // til þess að submit hafi þennan klasa sem "this" verðum við
-  // að nota bind hér (og í öðrum föllum sem við bindum!)
-  this.form.addEventListener('submit', this.submit.bind(this));
-  */
 
-
-  /**
-   * Sækir gögn úr localStorage eftir this.keyName
-   * Ef gögn eru til, hleður þeim inn með því að kalla í this.create()
-   */
-
-
-  _createClass(Video, [{
+  _createClass(Videos, [{
     key: 'load',
     value: function load() {
       var _this = this;
 
-      /*
-      const saved = window.localStorage.getItem(this.keyName);
-        if (saved) {
-        const parsed = JSON.parse(saved);
-        this.create(parsed.title, new Date(parsed.date));
-      }
-      */
-
-      $.getJSON("videos.json", function (json) {
+      $.getJSON('videos.json', function (json) {
         _this.json = json;
-        console.log(_this.json);
         _this.done();
       });
     }
   }, {
     key: 'createCategoryElements',
     value: function createCategoryElements() {
-      for (var i = 0; i < this.json.categories.length; i++) {
+      for (var i = 0; i < this.json.categories.length; i += 1) {
         $('main').append($('<section id="' + this.json.categories[i].id + '">').append($('<div class="row">').append($('<div class="col col-12">').append($('<h1 class="heading heading--category">').text(this.json.categories[i].title)))).append(this.createPosterElements(i))).append('<hr>');
       }
     }
@@ -68,7 +37,7 @@ var Video = function () {
       var container = $('<div class="row">');
       var c = this.json.categories[id].videos;
 
-      for (var i = 0; i < this.json.categories[id].videos.length; i++) {
+      for (var i = 0; i < this.json.categories[id].videos.length; i += 1) {
         container.append(this.createPosterElement(this.json.videos[c[i] - 1]));
       }
       return container;
@@ -76,134 +45,117 @@ var Video = function () {
   }, {
     key: 'createPosterElement',
     value: function createPosterElement(video) {
-      var container = document.createElement('figure');
-      container.setAttribute('class', 'col');
-      container.classList.add('col-4');
-      container.classList.add('col-sm-6');
-      container.classList.add('col-sm-sm-12');
+      var container = $('<figure class="col col-4 col-sm-6 col-sm-sm-12">');
 
-      var thumbnail = document.createElement('a');
-      thumbnail.setAttribute('href', '/video.html?id=' + video.id);
+      var thumbnail = $('<a href="/video.html?id=' + video.id + '">');
 
-      var img = document.createElement('img');
-      img.src = video.poster;
+      var img = $('<img src="' + video.poster + '">');
 
-      var duration = document.createElement('span');
+      var span = $('<span>');
 
       // Sýna lengdina á myndbandi
       var d = video.duration;
-      d = Math.floor(d / 60) + ':' + (d % 60 < 10 ? "0" + d % 60 : d % 60);
+      var sec = d % 60 < 10 ? '0' + d % 60 : d % 60;
+      d = Math.floor(d / 60) + ':' + sec;
 
-      duration.appendChild(document.createTextNode(d));
-      thumbnail.appendChild(img);
-      thumbnail.appendChild(duration);
+      span.text(d);
+      thumbnail.append(img).append(span);
 
-      var caption = document.createElement('figcaption');
-      caption.appendChild(document.createTextNode(video.title));
+      var caption = $('<figcaption>').text(video.title);
 
-      var p = document.createElement('p');
+      var p = $('<p>');
+
       var now = new Date();
-      var time = new Date(video.created);
-      time = now.getTime() - time.getTime();
-      var time1 = new Date(video.created);
+      var created = new Date(video.created);
+      var millisec = now.getTime() - created.getTime();
 
-      var totalSecs = Math.ceil(time / 1000);
+      var totalSecs = Math.ceil(millisec / 1000);
 
       var totalMin = Math.floor(totalSecs / 60);
 
       var totalHrs = Math.floor(totalSecs / (60 * 60));
 
-      // Fá fylki sem inniheldur árs-, mánaðar- og dagsmun
-      var dmy = this.diffDate(now, time1);
+      // Fá fylki sem inniheldur réttan árs-, mánaðar- og dagsmun
+      var dmy = this.diffDate(now, created);
+      var duration = void 0;
 
-      if (dmy.years > 0) time = 'Fyrir ' + dmy.years + ' \xE1rum s\xED\xF0an';else if (dmy.months > 0) time = 'Fyrir ' + dmy.months + ' m\xE1nu\xF0um s\xED\xF0an';else if (dmy.days > 0) {
+      if (dmy.years > 0) {
+        duration = 'Fyrir ' + dmy.years + ' ' + (dmy.years === 1 ? 'ári' : 'árum') + ' s\xED\xF0an';
+      } else if (dmy.months > 0) {
+        duration = 'Fyrir ' + dmy.months + ' ' + (dmy.months === 1 ? 'mánuði' : 'mánuðum') + ' s\xED\xF0an';
+      } else if (dmy.days > 0) {
         if (dmy.days >= 7) {
-          time = 'Fyrir ' + Math.floor(dmy.days / 7) + ' vikum s\xED\xF0an';
+          var weeks = Math.floor(dmy.days / 7);
+          duration = 'Fyrir ' + weeks + ' ' + (weeks === 1 ? 'viku' : 'vikum') + ' s\xED\xF0an';
         } else {
-          time = 'Fyrir ' + dmy.days + ' d\xF6gum s\xED\xF0an';
+          duration = 'Fyrir ' + dmy.days + ' ' + (dmy.days === 1 ? 'degi' : 'dögum') + ' s\xED\xF0an';
         }
-      } else if (totalHrs > 0) time = 'Fyrir ' + totalHrs + ' klukkut\xEDmum s\xED\xF0an';else if (totalMin > 0) time = 'Fyrir ' + totalMin + ' m\xEDn\xFAtum s\xED\xF0an';else time = 'Fyrir ' + totalSecs + ' sek\xFAndum s\xED\xF0an';
+      } else if (totalHrs > 0) {
+        duration = 'Fyrir ' + totalHrs + ' ' + (totalHrs === 1 ? 'klukkutíma' : 'klukkutímum') + ' s\xED\xF0an';
+      } else if (totalMin > 0) {
+        duration = 'Fyrir ' + totalMin + ' ' + (totalMin === 1 ? 'mínútu' : 'mínútum') + ' s\xED\xF0an';
+      } else {
+        duration = 'Fyrir ' + totalSecs + ' ' + (totalSecs === 1 ? 'sekúndu' : 'sekúndum') + ' s\xED\xF0an';
+      }
 
-      p.appendChild(document.createTextNode(time));
+      p.text(duration);
 
-      container.appendChild(thumbnail);
-      container.appendChild(caption);
-      container.appendChild(p);
+      container.append(thumbnail);
+      container.append(caption);
+      container.append(p);
 
       return container;
     }
   }, {
     key: 'diffDate',
     value: function diffDate(date1, date2) {
+      var d1 = date1;
+      var d2 = date2;
       var arr = { years: 0, months: 0, days: 0 };
 
-      if (date1 > date2) {
-        var tmp = date1;
-        date1 = date2;
-        date2 = tmp;
+      if (d1 > d2) {
+        var tmp = d1;
+        d1 = d2;
+        d2 = tmp;
       }
 
-      var years1 = date1.getFullYear();
-      var years2 = date2.getFullYear();
+      var years1 = d1.getFullYear();
+      var years2 = d2.getFullYear();
 
-      var months1 = date1.getMonth();
-      var months2 = date2.getMonth();
+      var months1 = d1.getMonth();
+      var months2 = d2.getMonth();
 
-      var days1 = date1.getDate();
-      var days2 = date2.getDate();
+      var days1 = d1.getDate();
+      var days2 = d2.getDate();
 
       arr.years = years2 - years1;
       arr.months = months2 - months1;
       arr.days = days2 - days1;
 
       if (arr.days < 0) {
-        var tmpDate = new Date(date1.getFullYear(), date1.getMonth() + 1, 1, 0, 0, -1);
+        var tmpDate = new Date(d1.getFullYear(), d1.getMonth() + 1, 1, 0, 0, -1);
 
         var numDays = tmpDate.getDate();
 
-        arr.months--;
+        arr.months -= 1;
         arr.days += numDays;
       }
 
       if (arr.months < 0) {
         arr.months += 12;
-        arr.years--;
+        arr.years -= 1;
       }
 
       return arr;
     }
-    /**
-     * Tekur við title sem streng og date sem Date hlut
-     * Vistar sem json gögn í localStorage undir this.keyName
-     */
-    /*
-    save(title, date) {
-     const data = { title, date };
-     const json = JSON.stringify(data);
-     window.localStorage.setItem(this.keyName, json);
-    }
-    */
-
-    /**
-     * Tekur við:
-     *  - date sem streng á forminu "yyyy-mm-dd", t.d. "2017-11-06"
-     *  - time sem streng á forminu "hh:mm", t.d. "09:00"
-     * Skilar date hlut með gögnum úr date og time
-     */
-    /*
-    parseDate(date, time) {
-     return new Date(`${date} ${time}`);
-    }
-    */
-
   }]);
 
-  return Video;
+  return Videos;
 }();
 
 document.addEventListener('DOMContentLoaded', function () {
-  var video = new Video();
-  video.load();
+  var videos = new Videos();
+  videos.load();
 });
 
 //# sourceMappingURL=script-compiled.js.map

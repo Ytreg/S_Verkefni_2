@@ -4,7 +4,7 @@
   "description": "",
   "main": "scripts.js",
   "scripts": {
-    "eslint": "eslint script1.js",
+    "eslint": "eslint script1.js script.js",
     "stylelint": "stylelint *.scss scss/*.scss --syntax scss",
     "lint": "npm-run-all --parallel eslint stylelint",
     "babel": "babel script1.js --watch --out-file script1-compiled.js --source-maps",
@@ -26,5 +26,10 @@
     "npm-run-all": "4.1.1",
     "stylelint": "8.1.1",
     "stylelint-config-primer": "2.0.1"
+  },
+  "eslintConfig": {
+    "env": {
+      "jquery": true
+    }
   }
 }
