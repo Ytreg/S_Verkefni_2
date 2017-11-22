@@ -25,3 +25,14 @@ figcaption {
   text-overflow: clip;
   overflow: hidden;
 }
+
+span { /* stylelint-disable-line */
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 5px;
+  margin: 16px 14px;
+  color: #fff;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
