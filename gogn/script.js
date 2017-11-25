@@ -60,8 +60,6 @@ class Videos {
 
     const totalSecs = Math.ceil(millisec / 1000);
 
-    const totalMin = Math.floor(totalSecs / 60);
-
     const totalHrs = Math.floor(totalSecs / (60 * 60));
 
     const days = Math.floor(totalHrs / 24);
@@ -74,7 +72,7 @@ class Videos {
       duration = `Fyrir ${Math.floor(days / 30)} ${Math.floor(days / 30) === 1 ? 'mánuði' : 'mánuðum'} síðan`;
     } else if (days > 7) {
       duration = `Fyrir ${Math.floor(days / 7)} ${Math.floor(days / 7) === 1 ? 'viku' : 'vikum'} síðan`;
-    } else if (days > 0){
+    } else if (totalHrs > 24){
       duration = `Fyrir ${days} ${days === 1 ? 'degi' : 'dögum'} síðan`;
     } else {
       duration = `Fyrir ${totalHrs} ${totalHrs === 1 ? 'klukkutíma' : 'klukkutímum'} síðan`;

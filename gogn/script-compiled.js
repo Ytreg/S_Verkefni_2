@@ -71,8 +71,6 @@ var Videos = function () {
 
       var totalSecs = Math.ceil(millisec / 1000);
 
-      var totalMin = Math.floor(totalSecs / 60);
-
       var totalHrs = Math.floor(totalSecs / (60 * 60));
 
       var days = Math.floor(totalHrs / 24);
@@ -85,7 +83,7 @@ var Videos = function () {
         duration = 'Fyrir ' + Math.floor(days / 30) + ' ' + (Math.floor(days / 30) === 1 ? 'mánuði' : 'mánuðum') + ' s\xED\xF0an';
       } else if (days > 7) {
         duration = 'Fyrir ' + Math.floor(days / 7) + ' ' + (Math.floor(days / 7) === 1 ? 'viku' : 'vikum') + ' s\xED\xF0an';
-      } else if (days > 0) {
+      } else if (totalHrs > 24) {
         duration = 'Fyrir ' + days + ' ' + (days === 1 ? 'degi' : 'dögum') + ' s\xED\xF0an';
       } else {
         duration = 'Fyrir ' + totalHrs + ' ' + (totalHrs === 1 ? 'klukkutíma' : 'klukkutímum') + ' s\xED\xF0an';
