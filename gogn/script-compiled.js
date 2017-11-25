@@ -47,7 +47,7 @@ var Videos = function () {
     value: function createPosterElement(video) {
       var container = $('<figure class="col col-4 col-sm-6 col-sm-sm-12">');
 
-      var thumbnail = $('<a href="/video.html?id=' + video.id + '">');
+      var thumbnail = $('<a href="video.html?id=' + video.id + '">');
 
       var img = $('<img src="' + video.poster + '">');
 

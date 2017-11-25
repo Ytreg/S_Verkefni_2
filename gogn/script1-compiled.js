@@ -36,7 +36,7 @@ var Video = function () {
     value: function success() {
       $('.heading--video').text(this.video.title);
       var videoElement = $('<video src="' + this.video.video + '" poster="' + this.video.poster + '">');
-      $('main').append($('<div class="video--wrapper">').append(videoElement).append($('<div class="video--overlay">').append('<button class="buttons--button buttons--play buttons--video">'))).append($('<div class="row">').append($('<div class="buttons">').append('<button class="buttons--button buttons--back">').append('<button class="buttons--button buttons--play">').append('<button class="buttons--button buttons--mute">').append('<button class="buttons--button buttons--fullscreen">').append('<button class="buttons--button buttons--next">'))).append($('<div class="row">').append($('<div class="col col-12 error">').append($('<a href="/" class="error--back">').text('Til baka'))));
+      $('main').append($('<div class="video--wrapper">').append(videoElement).append($('<div class="video--overlay">').append('<button class="buttons--button buttons--play buttons--video">'))).append($('<div class="row">').append($('<div class="buttons">').append('<button class="buttons--button buttons--back">').append('<button class="buttons--button buttons--play">').append('<button class="buttons--button buttons--mute">').append('<button class="buttons--button buttons--fullscreen">').append('<button class="buttons--button buttons--next">'))).append($('<div class="row">').append($('<div class="col col-12 error">').append($('<a href="index.html" class="error--back">').text('Til baka'))));
 
       $('.buttons--play').click(function () {
         var video = videoElement.get(0);
@@ -86,7 +86,7 @@ var Video = function () {
   }, {
     key: 'failure',
     value: function failure() {
-      $('main').append($('<div class="row">').append($('<p class="col col-12 error">').text('Videó er ekki til'))).append($('<div class="row">').append($('<div class="col col-12 error">').append($('<a href="/" class="error--back">').text('Til baka'))));
+      $('main').append($('<div class="row">').append($('<p class="col col-12 error">').text('Videó er ekki til'))).append($('<div class="row">').append($('<div class="col col-12 error">').append($('<a href="index.html" class="error--back">').text('Til baka'))));
     }
   }]);
 

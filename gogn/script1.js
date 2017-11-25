@@ -36,7 +36,7 @@ class Video {
           .append('<button class="buttons--button buttons--next">')))
       .append($('<div class="row">')
         .append($('<div class="col col-12 error">')
-          .append($('<a href="/" class="error--back">')
+          .append($('<a href="index.html" class="error--back">')
             .text('Til baka'))));
 
     $('.buttons--play').click(() => {
@@ -90,7 +90,7 @@ class Video {
           .text('Videó er ekki til')))
       .append($('<div class="row">')
         .append($('<div class="col col-12 error">')
-          .append($('<a href="/" class="error--back">')
+          .append($('<a href="index.html" class="error--back">')
             .text('Til baka'))));
   }
 }

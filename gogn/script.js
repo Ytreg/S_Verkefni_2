@@ -36,7 +36,7 @@ class Videos {
   createPosterElement(video) {
     const container = $('<figure class="col col-4 col-sm-6 col-sm-sm-12">');
 
-    const thumbnail = $(`<a href="/video.html?id=${video.id}">`);
+    const thumbnail = $(`<a href="video.html?id=${video.id}">`);
 
     const img = $(`<img src="${video.poster}">`);
 
