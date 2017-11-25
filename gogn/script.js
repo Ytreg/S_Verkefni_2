@@ -72,7 +72,7 @@ class Videos {
       duration = `Fyrir ${Math.floor(days / 30)} ${Math.floor(days / 30) === 1 ? 'mánuði' : 'mánuðum'} síðan`;
     } else if (days > 7) {
       duration = `Fyrir ${Math.floor(days / 7)} ${Math.floor(days / 7) === 1 ? 'viku' : 'vikum'} síðan`;
-    } else if (totalHrs > 24){
+    } else if (totalHrs > 24) {
       duration = `Fyrir ${days} ${days === 1 ? 'degi' : 'dögum'} síðan`;
     } else {
       duration = `Fyrir ${totalHrs} ${totalHrs === 1 ? 'klukkutíma' : 'klukkutímum'} síðan`;

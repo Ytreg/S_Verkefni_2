@@ -18,12 +18,13 @@
     background: rgba(0, 0, 0, 0.2);
   }
 }
-figcaption {
+
+figcaption { /* stylelint-disable-line */
+  overflow: hidden;
   font-size: 1.2em;
   font-weight: bold;
-  white-space: nowrap;
   text-overflow: clip;
-  overflow: hidden;
+  white-space: nowrap;
 }
 
 span { /* stylelint-disable-line */
