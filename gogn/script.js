@@ -64,27 +64,20 @@ class Videos {
 
     const totalHrs = Math.floor(totalSecs / (60 * 60));
 
-    // Fá fylki sem inniheldur réttan árs-, mánaðar- og dagsmun
-    const dmy = this.diffDate(now, created);
+    const days = Math.floor(totalHrs / 24);
+
     let duration;
 
-    if (dmy.years > 0) {
-      duration = `Fyrir ${dmy.years} ${dmy.years === 1 ? 'ári' : 'árum'} síðan`;
-    } else if (dmy.months > 0) {
-      duration = `Fyrir ${dmy.months} ${dmy.months === 1 ? 'mánuði' : 'mánuðum'} síðan`;
-    } else if (dmy.days > 0) {
-      if (dmy.days >= 7) {
-        const weeks = Math.floor(dmy.days / 7);
-        duration = `Fyrir ${weeks} ${weeks === 1 ? 'viku' : 'vikum'} síðan`;
-      } else {
-        duration = `Fyrir ${dmy.days} ${dmy.days === 1 ? 'degi' : 'dögum'} síðan`;
-      }
-    } else if (totalHrs > 0) {
-      duration = `Fyrir ${totalHrs} ${totalHrs === 1 ? 'klukkutíma' : 'klukkutímum'} síðan`;
-    } else if (totalMin > 0) {
-      duration = `Fyrir ${totalMin} ${totalMin === 1 ? 'mínútu' : 'mínútum'} síðan`;
+    if (days > 365) {
+      duration = `Fyrir ${Math.floor(days / 365)} ${Math.floor(days / 365) === 1 ? 'ári' : 'árum'} síðan`;
+    } else if (days > 30) {
+      duration = `Fyrir ${Math.floor(days / 30)} ${Math.floor(days / 30) === 1 ? 'mánuði' : 'mánuðum'} síðan`;
+    } else if (days > 7) {
+      duration = `Fyrir ${Math.floor(days / 7)} ${Math.floor(days / 7) === 1 ? 'viku' : 'vikum'} síðan`;
+    } else if (days > 0){
+      duration = `Fyrir ${days} ${days === 1 ? 'degi' : 'dögum'} síðan`;
     } else {
-      duration = `Fyrir ${totalSecs} ${totalSecs === 1 ? 'sekúndu' : 'sekúndum'} síðan`;
+      duration = `Fyrir ${totalHrs} ${totalHrs === 1 ? 'klukkutíma' : 'klukkutímum'} síðan`;
     }
 
     p.text(duration);
@@ -94,47 +87,6 @@ class Videos {
     container.append(p);
 
     return container;
-  }
-
-  diffDate(date1, date2) {
-    let d1 = date1;
-    let d2 = date2;
-    const arr = { years: 0, months: 0, days: 0 };
-
-    if (d1 > d2) {
-      const tmp = d1;
-      d1 = d2;
-      d2 = tmp;
-    }
-
-    const years1 = d1.getFullYear();
-    const years2 = d2.getFullYear();
-
-    const months1 = d1.getMonth();
-    const months2 = d2.getMonth();
-
-    const days1 = d1.getDate();
-    const days2 = d2.getDate();
-
-    arr.years = years2 - years1;
-    arr.months = months2 - months1;
-    arr.days = days2 - days1;
-
-    if (arr.days < 0) {
-      const tmpDate = new Date(d1.getFullYear(), d1.getMonth() + 1, 1, 0, 0, -1);
-
-      const numDays = tmpDate.getDate();
-
-      arr.months -= 1;
-      arr.days += numDays;
-    }
-
-    if (arr.months < 0) {
-      arr.months += 12;
-      arr.years -= 1;
-    }
-
-    return arr;
   }
 }
 

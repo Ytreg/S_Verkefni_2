@@ -75,27 +75,20 @@ var Videos = function () {
 
       var totalHrs = Math.floor(totalSecs / (60 * 60));
 
-      // Fá fylki sem inniheldur réttan árs-, mánaðar- og dagsmun
-      var dmy = this.diffDate(now, created);
+      var days = Math.floor(totalHrs / 24);
+
       var duration = void 0;
 
-      if (dmy.years > 0) {
-        duration = 'Fyrir ' + dmy.years + ' ' + (dmy.years === 1 ? 'ári' : 'árum') + ' s\xED\xF0an';
-      } else if (dmy.months > 0) {
-        duration = 'Fyrir ' + dmy.months + ' ' + (dmy.months === 1 ? 'mánuði' : 'mánuðum') + ' s\xED\xF0an';
-      } else if (dmy.days > 0) {
-        if (dmy.days >= 7) {
-          var weeks = Math.floor(dmy.days / 7);
-          duration = 'Fyrir ' + weeks + ' ' + (weeks === 1 ? 'viku' : 'vikum') + ' s\xED\xF0an';
-        } else {
-          duration = 'Fyrir ' + dmy.days + ' ' + (dmy.days === 1 ? 'degi' : 'dögum') + ' s\xED\xF0an';
-        }
-      } else if (totalHrs > 0) {
-        duration = 'Fyrir ' + totalHrs + ' ' + (totalHrs === 1 ? 'klukkutíma' : 'klukkutímum') + ' s\xED\xF0an';
-      } else if (totalMin > 0) {
-        duration = 'Fyrir ' + totalMin + ' ' + (totalMin === 1 ? 'mínútu' : 'mínútum') + ' s\xED\xF0an';
+      if (days > 365) {
+        duration = 'Fyrir ' + Math.floor(days / 365) + ' ' + (Math.floor(days / 365) === 1 ? 'ári' : 'árum') + ' s\xED\xF0an';
+      } else if (days > 30) {
+        duration = 'Fyrir ' + Math.floor(days / 30) + ' ' + (Math.floor(days / 30) === 1 ? 'mánuði' : 'mánuðum') + ' s\xED\xF0an';
+      } else if (days > 7) {
+        duration = 'Fyrir ' + Math.floor(days / 7) + ' ' + (Math.floor(days / 7) === 1 ? 'viku' : 'vikum') + ' s\xED\xF0an';
+      } else if (days > 0) {
+        duration = 'Fyrir ' + days + ' ' + (days === 1 ? 'degi' : 'dögum') + ' s\xED\xF0an';
       } else {
-        duration = 'Fyrir ' + totalSecs + ' ' + (totalSecs === 1 ? 'sekúndu' : 'sekúndum') + ' s\xED\xF0an';
+        duration = 'Fyrir ' + totalHrs + ' ' + (totalHrs === 1 ? 'klukkutíma' : 'klukkutímum') + ' s\xED\xF0an';
       }
 
       p.text(duration);
@@ -105,48 +98,6 @@ var Videos = function () {
       container.append(p);
 
       return container;
-    }
-  }, {
-    key: 'diffDate',
-    value: function diffDate(date1, date2) {
-      var d1 = date1;
-      var d2 = date2;
-      var arr = { years: 0, months: 0, days: 0 };
-
-      if (d1 > d2) {
-        var tmp = d1;
-        d1 = d2;
-        d2 = tmp;
-      }
-
-      var years1 = d1.getFullYear();
-      var years2 = d2.getFullYear();
-
-      var months1 = d1.getMonth();
-      var months2 = d2.getMonth();
-
-      var days1 = d1.getDate();
-      var days2 = d2.getDate();
-
-      arr.years = years2 - years1;
-      arr.months = months2 - months1;
-      arr.days = days2 - days1;
-
-      if (arr.days < 0) {
-        var tmpDate = new Date(d1.getFullYear(), d1.getMonth() + 1, 1, 0, 0, -1);
-
-        var numDays = tmpDate.getDate();
-
-        arr.months -= 1;
-        arr.days += numDays;
-      }
-
-      if (arr.months < 0) {
-        arr.months += 12;
-        arr.years -= 1;
-      }
-
-      return arr;
     }
   }]);
 
