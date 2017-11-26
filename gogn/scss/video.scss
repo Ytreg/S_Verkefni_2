@@ -5,6 +5,10 @@
     width: (10 / 12) * 100%;
     margin: auto;
     flex-direction: column;
+
+    @media (max-width: 1299px) {
+      width: 100%;
+    }
   }
 
   &--overlay {

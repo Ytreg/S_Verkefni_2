@@ -52,9 +52,10 @@ class Video {
       }
     });
 
-    // láta pause takkan vera play takki þegar video-ið klárast
+    // láta pause takkan vera play takki þegar video-ið klárast og birta overlay-ið
     $('video').bind('ended', () => {
       $('.buttons--pause').removeClass('buttons--pause').addClass('buttons--play');
+      $('.video--overlay').css('display', 'block');
     });
 
     $('.buttons--mute').click(() => {
